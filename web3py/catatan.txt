@@ -1,0 +1,11 @@
+# BIKIN VIRTUAL ENV
+py -m venv env
+
+# AKTIFKAN VIRTUAL ENV
+.\env\Scripts\activate
+
+# CEK VIRTUAL ENV
+where python
+
+# NON AKTIFKAN ENV
+deactivate

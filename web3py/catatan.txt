@@ -9,3 +9,6 @@ where python
 
 # NON AKTIFKAN ENV
 deactivate
+
+# ganache CLI
+ganache -d

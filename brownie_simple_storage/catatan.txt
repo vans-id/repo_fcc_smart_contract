@@ -1,0 +1,23 @@
+# init project
+brownie init
+
+# ganti python ke brownie venv
+CMD + SHIFT + P -> Python: Select Interpreter -> Brownie
+
+# compile project
+brownie compile
+
+# jalankan script
+brownie run
+
+# test project
+brownie test
+
+# test 1 func saja
+brownie test -k <nama_project>
+
+# kalau gagal, masuk python shell
+brownie test --pdb
+
+# test project dengan keterangan
+brownie test -s

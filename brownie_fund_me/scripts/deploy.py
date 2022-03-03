@@ -1,3 +1,5 @@
+# brownie run deploy.py --network ganache-local
+
 from brownie import FundMe, MockV3Aggregator, network, config
 from scripts.helpful_scripts import (
     LOCAL_BLOCKCHAIN_ENVIRONMENTS,
@@ -25,6 +27,8 @@ def deploy_fund_me():
         ),  # get direct value instead of index
     )
     print(f"Contract deployed to {fund_me.address}")
+
+    return fund_me
 
 
 def main():

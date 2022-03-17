@@ -113,14 +113,16 @@ contract Lottery is VRFConsumerBase, Ownable {
         randomness = _randomness;
     }
 
-    // uint256(
-    //     keccak256(
-    //         abi.encodePacked(
-    //             nonce, // predictable (aka, transaction number)
-    //             msg.sender, // predictable
-    //             block.difficulty, // can be manipulated by miners
-    //             block.timestamp // predictable
-    //         )
-    //     )
-    // ) % players.length;
+    /** 
+    uint256(
+        keccak256(
+            abi.encodePacked(
+                nonce, // predictable (aka, transaction number)
+                msg.sender, // predictable
+                block.difficulty, // can be manipulated by miners
+                block.timestamp // predictable
+            )
+        )
+    ) % players.length;
+   */
 }

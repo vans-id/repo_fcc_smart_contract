@@ -60,8 +60,7 @@ def get_contract(contract_name):
     Returns
     ----------
     brownie.network.contract.ProjectContract:
-        The most recently deployed version of this contract
-        Ex: MockV3Aggregator[-1]
+        The most recently deployed version of selected contract
     """
     contract_type = contract_to_mock[contract_name]
 
@@ -121,6 +120,10 @@ def fund_with_link(
 
     amount: integer, optional
         Amount given to transfer
+
+    Returns
+    ----------
+    tx: link Token transaction
     """
 
     account = account if account else get_account()
@@ -132,3 +135,4 @@ def fund_with_link(
     tx.wait(1)
 
     print("Contract has been funded with LINK")
+    return tx

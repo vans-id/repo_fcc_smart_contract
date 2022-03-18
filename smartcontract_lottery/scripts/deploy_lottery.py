@@ -1,6 +1,7 @@
-from scripts.helpful_scripts import fund_with_link, get_account, get_contract
 from brownie import Lottery, network, config
 import time
+
+from scripts.helpful_scripts import fund_with_link, get_account, get_contract
 
 
 def deploy_lottery():
@@ -44,7 +45,7 @@ def enter_lottery():
     """
     account = get_account()
     lottery = Lottery[-1]
-    value = lottery.getEntranceFee() + 1_0000_0000
+    value = lottery.getEntranceFee() + 2_0000_0000
 
     tx = lottery.enter({"from": account, "value": value})
     tx.wait(1)

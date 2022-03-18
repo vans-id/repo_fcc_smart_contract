@@ -1,4 +1,4 @@
-from brownie import Lottery, accounts, config, network, exceptions
+from brownie import network
 import pytest
 from scripts.deploy_lottery import deploy_lottery
 from web3 import Web3
@@ -7,6 +7,7 @@ from scripts.helpful_scripts import (
     LOCAL_BLOCKCHAIN_ENVIRONMENTS,
     fund_with_link,
     get_account,
+    get_contract,
 )
 
 
@@ -72,7 +73,9 @@ def test_can_end_lottery():
 
 
 def test_can_pick_winner_correctly():
-    """Assure the lottery is correctly choose a winner(via requestRandomness), pays the winner, and correctly resets the lottery"""
+    """Assure the lottery is correctly choose a winner(via requestRandomness), pays the winner, and correctly resets the lottery.
+
+    Mocks responses from chainlink node"""
 
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip()
@@ -87,7 +90,21 @@ def test_can_pick_winner_correctly():
 
     fund_with_link(lottery)
 
-    lottery.endLottery({"from": account})
+    transaction = lottery.endLottery({"from": account})
+    request_id = transaction.events["RequestedRandomness"]["requestId"]
+
+    STATIC_RNG = 777
+
+    get_contract("vrf_coordinator").callBackWithRandomness(
+        request_id, STATIC_RNG, lottery.address, {"from": account}
+    )
+
+    acc_balance = account.balance()
+    lottery_balance = lottery.balance()
+
+    assert lottery.recentWinner() == account
+    assert lottery.balance() == 0
+    assert account.balance() == acc_balance + lottery_balance
 
 
 # def test_get_entrance_fee():

@@ -13,10 +13,9 @@ def main():
     account = get_account()
     print(f"Deploying to {network.show_active()}")
 
-    box = Box.deploy({"from": account})
+    box = Box.deploy({"from": account}, publish_source=True)
 
-    proxy_admin = ProxyAdmin.deploy({"from": account})
-    initializer = box.store, 1
+    proxy_admin = ProxyAdmin.deploy({"from": account}, publish_source=True)
 
     box_encoded_initializer_function = encode_function_data()
 
@@ -25,6 +24,7 @@ def main():
         proxy_admin.address,
         box_encoded_initializer_function,
         {"from": account, "gas_limit": 1_000_000},
+        publish_source=True,
     )
     print(f"proxy deployed to {proxy}, you now can upgrade to v2!")
 
@@ -32,7 +32,7 @@ def main():
     proxy_box.store(1, {"from": account})
     print(proxy_box.retrieve())
 
-    box_v2 = BoxV2.deploy({"from": account})
+    box_v2 = BoxV2.deploy({"from": account}, publish_source=True)
     upgrade_tx = upgrade(account, proxy, box_v2.address, proxy_admin)
     upgrade_tx.wait(1)
 

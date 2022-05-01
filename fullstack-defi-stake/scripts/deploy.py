@@ -6,13 +6,14 @@ KEPT_BALANCE = Web3.toWei(100, "ether")
 
 
 def deploy_token_farm_and_crewmate_token():
-    """
-    Deploy token farm contract and crewmate token
+    """Deploy token farm contract and crewmate token
 
     Returns
     --------
-    token_farm: Token Farm for Defi Smart Contract
-    crewmate_token: Reward Token for staking in defi
+    token_farm
+        Token Farm for Defi Smart Contract
+    crewmate_token
+        Reward Token for staking in defi
     """
 
     account = get_account()
@@ -42,23 +43,23 @@ def deploy_token_farm_and_crewmate_token():
 
 
 def add_allowed_tokens(token_farm, dict_of_allowed_tokens, account):
-    """
-    Add tokens to be able to stake
+    """Add tokens to be able to stake
 
     Parameters
     --------
     token_farm: address
         Defi smart contract address
-
     dict_of_allowed_tokens: dict
         Allowed tokens in dictionary data structure
-
     account: address
         Owner account to deploy smart contract
 
     Returns
     --------
-    token_farm: Defi Smart Contract
+    token_farm
+        Token Farm for Defi Smart Contract
+    crewmate_token
+        Reward Token for staking in defi
     """
 
     for token in dict_of_allowed_tokens:

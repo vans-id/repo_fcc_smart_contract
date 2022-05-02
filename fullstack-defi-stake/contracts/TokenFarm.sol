@@ -171,7 +171,7 @@ contract TokenFarm is Ownable {
      * @param _token token address
      * @return boolean
      */
-    function tokenIsAllowed(address _token) public returns (bool) {
+    function tokenIsAllowed(address _token) public view returns (bool) {
         for (uint256 i = 0; i < allowedTokens.length; i++) {
             if (allowedTokens[i] == _token) return true;
         }

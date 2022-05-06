@@ -4,28 +4,40 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { DAppProvider, Kovan } from '@usedapp/core';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { getDefaultProvider } from 'ethers'
-import "./index.css"
+import { getDefaultProvider } from 'ethers';
+import './index.css';
+import { indigo } from '@mui/material/colors';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const darkTheme = createTheme({
+const lightTheme = createTheme({
   palette: {
-    mode: 'dark',
-  },  
+    primary: {
+      main: indigo.A400,
+    },
+    secondary: {
+      main: indigo.A200,
+    },
+  },
 });
 
 root.render(
   <React.StrictMode>
-    <DAppProvider config={{ 
-      readOnlyChainId: Kovan.chainId,
-      readOnlyUrls: {
-        [Kovan.chainId]: getDefaultProvider('kovan'),
-      },
-    }}>
-      <ThemeProvider theme={darkTheme} >
+    <DAppProvider
+      config={{
+        readOnlyChainId: Kovan.chainId,
+        readOnlyUrls: {
+          [Kovan.chainId]: getDefaultProvider('kovan'),
+        },
+        notifications: {
+          expirationPeriod: 1000,
+          checkInterval: 1000,
+        },
+      }}
+    >
+      <ThemeProvider theme={lightTheme}>
         <App />
       </ThemeProvider>
     </DAppProvider>

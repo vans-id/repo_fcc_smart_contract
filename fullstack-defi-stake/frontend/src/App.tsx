@@ -1,19 +1,20 @@
 import { styled } from '@mui/material/styles';
-import { Box, Container } from '@mui/material'
-import Header from './components/Header';
-import Main from './components/Main';
+import { Box, Container } from '@mui/material';
+import Header from './containers/Header';
+import Main from './containers/Main';
 
-const AppContainer = styled(Box)(({ theme }) => `
-  background: ${theme.palette.background.paper};
+const AppContainer = styled(Box)(
+  ({ theme }) => `
+  background: #F2F4F6;
   min-height: 100vh;
-  color: #fff;
-`)
+`
+);
 
 function App() {
   return (
     <AppContainer>
-      <Container maxWidth="md">
-        <Header />
+      <Header />
+      <Container maxWidth='sm'>
         <Main />
       </Container>
     </AppContainer>

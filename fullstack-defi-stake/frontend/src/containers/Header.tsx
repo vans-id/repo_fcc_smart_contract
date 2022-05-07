@@ -66,7 +66,7 @@ const MenuItem = styled(Button)(
 const AppbarContainer = styled(Box)`
   display: flex;
   align-items: center;
-  padding: 1rem 3vw;
+  padding: 1rem 10vw;
 `;
 
 export default Header;

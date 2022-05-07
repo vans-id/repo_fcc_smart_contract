@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Token } from '../../utils/helper';
 import { useEthers, useTokenBalance, useNotifications } from '@usedapp/core';
 import { formatUnits } from '@ethersproject/units';
-import { Button, CircularProgress, Snackbar } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import useStakeTokens from '../../hooks/useStakeTokens';
 import { utils } from 'ethers';
 import { Box } from '@mui/system';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { APPROVE_TOKENS, STAKE_TOKENS } from '../../utils/constants';
 import SliderInput from '../../components/SliderInput';
+import CustomAlert from '../../components/CustomAlert';
 
 export interface StakeFormProps {
   /** @typedef {import('../../utils/helper').Token} Token */
@@ -118,36 +118,19 @@ const StakeForm = ({ token: { image, address, name } }: StakeFormProps) => {
       </StakeContainer>
 
       {/* Snackbars */}
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      <CustomAlert
         open={isApproved}
-        autoHideDuration={5000}
         onClose={handleCloseSnack}
-      >
-        <Alert onClose={handleCloseSnack} severity='success'>
-          Transaction approved!
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        message={'Transaction approved!'}
+      />
+      <CustomAlert
         open={isStaked}
-        autoHideDuration={5000}
         onClose={handleCloseSnack}
-      >
-        <Alert onClose={handleCloseSnack} severity='success'>
-          Transaction confirmed!
-        </Alert>
-      </Snackbar>
+        message={'Transaction confirmed!'}
+      />
     </>
   );
 };
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref
-) {
-  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
-});
 
 const StakeContainer = styled(Box)(
   ({ theme }) => `

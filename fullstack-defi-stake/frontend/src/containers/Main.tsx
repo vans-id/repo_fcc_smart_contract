@@ -3,6 +3,7 @@ import YourWallet from './YourWallet/YourWallet';
 import { getSupportedTokens } from '../utils/helper';
 import { useState, useEffect } from 'react';
 import { Alert, Snackbar } from '@mui/material';
+import TokenFarm from './TokenFarm/TokenFarm';
 
 /**
  * Component for showing the Main app's container
@@ -30,7 +31,7 @@ const Main = () => {
   };
 
   /**
-   * inspect the error from useEthers and conditionally show a notification
+   * observe the error from useEthers and conditionally show a notification
    */
   useEffect(() => {
     if (error && error.name === 'UnsupportedChainIdError') {
@@ -43,6 +44,7 @@ const Main = () => {
   return (
     <>
       <YourWallet supportedTokens={getSupportedTokens(chainId)} />
+      <TokenFarm supportedTokens={getSupportedTokens(chainId)} />
 
       <Snackbar
         open={showNetworkError}

@@ -7,6 +7,7 @@ const AppContainer = styled(Box)(
   ({ theme }) => `
   background: #F2F4F6;
   min-height: 100vh;
+  padding-bottom: 40vh;
 `
 );
 

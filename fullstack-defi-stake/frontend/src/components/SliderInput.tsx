@@ -23,6 +23,17 @@ interface SliderInputProps {
  *
  * @component
  * @example
+ * const [value, setValue] = useState(0)
+ * return (
+ *    <SliderInput
+ *        image="../src/wbtc.png"
+ *        id="slider-input-wbtc"
+ *        maxValue={100.0}
+ *        value={value}
+ *        onChange={setValue}
+ *        disabled={false}
+ *    />
+ * )
  */
 const SliderInput = ({
   image = '',
@@ -75,7 +86,7 @@ const SliderInput = ({
   };
 
   /**
-   * Function for onBlur input component
+   * Function for onBlur TextField component
    */
   const handleBlur = () => {
     if (value < 0) {

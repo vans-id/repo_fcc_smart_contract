@@ -1,39 +1,23 @@
-import { useState } from 'react';
-import { styled } from '@mui/material/styles';
-import { Box, Paper, Tab, Typography } from '@mui/material';
-import { Token } from '../../utils/helper';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
-import WalletBalance from './WalletBalance';
-import StakeForm from './StakeForm';
+import React, { useState } from 'react';
 import { useEthers } from '@usedapp/core';
+import { styled } from '@mui/material/styles';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import Placeholder from '../../components/Placeholder';
+import { Tab, Box, Typography, Paper } from '@mui/material';
+import { Token } from '../../utils/helper';
+import Unstake from './Unstake';
 
-interface YourWalletProps {
+interface TokenFarmProps {
   /** @typedef {import('../../utils/helper').Token} Token */
   supportedTokens: Array<Token>;
 }
 
-/**
- * Component for showing the user's token from the wallet.
- *
- * @component
- * @example
- * const supportedTokens: Array<Token> = [
- *   {
- *      image: "asset/wbtc.png",
- *      address: "0x00",
- *      name: "WBTC"
- *   },
- * ]
- * return <YourWallet supportedTokens={supportedTokens} />
- */
-const YourWallet = ({ supportedTokens }: YourWalletProps) => {
+const TokenFarm = ({ supportedTokens }: TokenFarmProps) => {
   const [selectedToken, setSelectedToken] = useState(0);
 
   const { account } = useEthers();
 
   const isConnected = account !== undefined;
-  const tokenName = supportedTokens[selectedToken].name;
 
   /**
    * update tab state with the currently selected tab
@@ -45,13 +29,9 @@ const YourWallet = ({ supportedTokens }: YourWalletProps) => {
   };
 
   return (
-    <WalletContainer>
-      <WalletHeader variant='h5'>{`Stake ${tokenName}`}</WalletHeader>
-      <WalletSubheader>
-        Stake {tokenName} and receive CREW while staking.
-      </WalletSubheader>
-
-      <WalletCard elevation={0}>
+    <FarmContainer>
+      <FarmCard elevation={0}>
+        <FarmHeader variant='h5'>Total Deposit</FarmHeader>
         <Box>
           <TabContext value={selectedToken.toString()}>
             <TabList
@@ -70,10 +50,7 @@ const YourWallet = ({ supportedTokens }: YourWalletProps) => {
                   key={i}
                   style={{ padding: '2rem 0 0' }}
                 >
-                  <div>
-                    <WalletBalance token={token} />
-                    <StakeForm token={token} />
-                  </div>
+                  <Unstake token={token} />
                 </TabPanel>
               ))
             ) : (
@@ -81,31 +58,31 @@ const YourWallet = ({ supportedTokens }: YourWalletProps) => {
             )}
           </TabContext>
         </Box>
-      </WalletCard>
-    </WalletContainer>
+      </FarmCard>
+    </FarmContainer>
   );
 };
 
-const WalletContainer = styled(Box)(
+const FarmContainer = styled(Box)(
   ({ theme }) => `
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 2rem;
 `
 );
-const WalletHeader = styled(Typography)(
+const FarmHeader = styled(Typography)(
   ({ theme }) => `
-  margin-top: 2rem;
   margin-bottom: 0.5rem;
 `
 );
-const WalletSubheader = styled(Typography)(
+const FarmSubheader = styled(Typography)(
   ({ theme }) => `
   margin-bottom: 2rem;
   color: ${theme.palette.grey[700]}
 `
 );
-const WalletCard = styled(Paper)(
+const FarmCard = styled(Paper)(
   ({ theme }) => `
   width: 100%;
   padding: ${theme.spacing(4)};
@@ -113,4 +90,4 @@ const WalletCard = styled(Paper)(
 `
 );
 
-export default YourWallet;
+export default TokenFarm;

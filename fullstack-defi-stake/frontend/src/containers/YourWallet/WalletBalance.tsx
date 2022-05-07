@@ -4,7 +4,7 @@ import { formatUnits } from '@ethersproject/units';
 import BalanceMsg from '../../components/BalanceMsg';
 
 interface WalletBalanceProps {
-  /** single token object */
+  /** @typedef {import('../../utils/helper').Token} Token */
   token: Token;
 }
 

@@ -20,13 +20,22 @@ export type Token = {
 };
 
 /**
+ * Our single central location to store info on support tokens.
+ * This is the only place you'll need to add a new token to get it to display in the UI!
+ *
+ * Modularize the addresses like with `dappTokenAddress`
+ * To make it chain agnostic
+ */
+
+/**
  * Function that returns list of supported tokens for the app
  *
  * @param {number|undefined} chainId - the network chain ID
  * @return {Array<Token>} - the supported tokens
  */
 export const getSupportedTokens = (chainId: number | undefined) => {
-  const networkName = chainId ? helperConfig[chainId] : 'dev';
+  const networkName = chainId ? helperConfig[chainId] : 'ganache';
+
   const crewmateTokenAddress = chainId
     ? networkMapping[String(chainId)]['CrewmateToken'][0]
     : constants.AddressZero;

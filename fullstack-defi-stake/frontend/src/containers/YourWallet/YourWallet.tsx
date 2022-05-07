@@ -5,11 +5,11 @@ import { Token } from '../../utils/helper';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import WalletBalance from './WalletBalance';
 import StakeForm from './StakeForm';
+import { useEthers } from '@usedapp/core';
+import Placeholder from '../../components/Placeholder';
 
 interface YourWalletProps {
-  /**
-   * Available tokens in the defi
-   */
+  /** @typedef {import('../../utils/helper').Token} Token */
   supportedTokens: Array<Token>;
 }
 
@@ -19,19 +19,26 @@ interface YourWalletProps {
  * @component
  * @example
  * const supportedTokens: Array<Token> = [
- *   {image: "asset/image.png", address: "0x00", name: "CREW" },
+ *   {
+ *      image: "asset/wbtc.png",
+ *      address: "0x00",
+ *      name: "WBTC"
+ *   },
  * ]
  * return <YourWallet supportedTokens={supportedTokens} />
  */
 const YourWallet = ({ supportedTokens }: YourWalletProps) => {
-  const [selectedToken, setSelectedToken] = useState<number>(0);
+  const [selectedToken, setSelectedToken] = useState(0);
 
+  const { account } = useEthers();
+
+  const isConnected = account !== undefined;
   const tokenName = supportedTokens[selectedToken].name;
 
   /**
    * update tab state with the currently selected tab
-   * @param   {React.ChangeEvent<{}>} e   JS event object
-   * @param   {string} newValue   latest selected tab value
+   * @param {React.ChangeEvent<{}>} e JS event object
+   * @param {string} newValue latest selected tab value
    */
   const handleChange = (e: React.ChangeEvent<{}>, newValue: string) => {
     setSelectedToken(parseInt(newValue));
@@ -43,6 +50,7 @@ const YourWallet = ({ supportedTokens }: YourWalletProps) => {
       <WalletSubheader>
         Stake {tokenName} and receive CREW while staking.
       </WalletSubheader>
+
       <WalletCard elevation={0}>
         <Box>
           <TabContext value={selectedToken.toString()}>
@@ -51,18 +59,22 @@ const YourWallet = ({ supportedTokens }: YourWalletProps) => {
                 <Tab label={token.name} value={i.toString()} key={i} />
               ))}
             </TabList>
-            {supportedTokens.map((token, i) => (
-              <TabPanel
-                value={i.toString()}
-                key={i}
-                style={{ padding: '2rem 0 0' }}
-              >
-                <div>
-                  <WalletBalance token={token} />
-                  <StakeForm token={token} />
-                </div>
-              </TabPanel>
-            ))}
+            {isConnected ? (
+              supportedTokens.map((token, i) => (
+                <TabPanel
+                  value={i.toString()}
+                  key={i}
+                  style={{ padding: '2rem 0 0' }}
+                >
+                  <div>
+                    <WalletBalance token={token} />
+                    <StakeForm token={token} />
+                  </div>
+                </TabPanel>
+              ))
+            ) : (
+              <Placeholder />
+            )}
           </TabContext>
         </Box>
       </WalletCard>

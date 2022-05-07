@@ -1,11 +1,14 @@
+import json, os
+import shutil
 from brownie import CrewmateToken, TokenFarm, network, config
 from web3 import Web3
 from scripts.helpful_scripts import get_account, get_contract
+import yaml
 
 KEPT_BALANCE = Web3.toWei(100, "ether")
 
 
-def deploy_token_farm_and_crewmate_token():
+def deploy_token_farm_and_crewmate_token(is_update=False):
     """Deploy token farm contract and crewmate token
 
     Returns
@@ -38,6 +41,9 @@ def deploy_token_farm_and_crewmate_token():
         weth_token: get_contract("eth_usd_price_feed"),
     }
     add_allowed_tokens(token_farm, dict_of_allowed_tokens, account)
+
+    if is_update:
+        update_front_end()
 
     return token_farm, crewmate_token
 
@@ -72,5 +78,34 @@ def add_allowed_tokens(token_farm, dict_of_allowed_tokens, account):
     return token_farm
 
 
+def update_front_end():
+    """Sending config in JSON Format and build folder"""
+
+    copy_folders_to_front_end("./build", "./frontend/src/chain-info")
+
+    with open("brownie-config.yaml", "r") as brownie_config:
+        config_dict = yaml.load(brownie_config, Loader=yaml.FullLoader)
+        with open("./frontend/src/brownie-config.json", "w") as brownie_config_json:
+            json.dump(config_dict, brownie_config_json)
+
+    print("Frontend updated...")
+
+
+def copy_folders_to_front_end(src, dest):
+    """Copy folder to frontend.
+    If folder exist, delete it first before copying
+
+    Parameters
+    --------
+    src: string
+        the source folder path that want to be copied
+    dest: string
+        copied destination path folder
+    """
+    if os.path.exists(dest):
+        shutil.rmtree(dest)
+    shutil.copytree(src, dest)
+
+
 def main():
-    deploy_token_farm_and_crewmate_token()
+    deploy_token_farm_and_crewmate_token(is_update=True)

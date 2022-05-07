@@ -3,33 +3,16 @@ import { styled } from '@mui/material/styles';
 import { Token } from '../../utils/helper';
 import { useEthers, useTokenBalance, useNotifications } from '@usedapp/core';
 import { formatUnits } from '@ethersproject/units';
-import {
-  Avatar,
-  Button,
-  CircularProgress,
-  InputAdornment,
-  Snackbar,
-  TextField,
-} from '@mui/material';
+import { Button, CircularProgress, Snackbar } from '@mui/material';
 import useStakeTokens from '../../hooks/useStakeTokens';
 import { utils } from 'ethers';
 import { Box } from '@mui/system';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { APPROVE_TOKENS, STAKE_TOKENS } from '../../utils/constants';
+import SliderInput from '../../components/SliderInput';
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref
-) {
-  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
-});
-
-/**
- * @typedef StakeFormProps
- * @prop {Token} token
- */
 export interface StakeFormProps {
-  /** Single Token Value */
+  /** @typedef {import('../../utils/helper').Token} Token */
   token: Token;
 }
 
@@ -61,15 +44,8 @@ const StakeForm = ({ token: { image, address, name } }: StakeFormProps) => {
     ? parseFloat(formatUnits(tokenBalance, 18))
     : 0;
   const isMining = state.status === 'Mining';
-
-  /**
-   * update input amount with the new one
-   * @param   {React.ChangeEvent<HTMLInputElement>} e  JS input event object
-   */
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newAmount = e.target.value === '' ? '' : Number(e.target.value);
-    setAmount(newAmount);
-  };
+  const hasZeroBalance = formattedTokenBalance === 0;
+  const hasZeroAmountSelected = parseFloat(amount.toString()) === 0;
 
   /**
    * approve transaction on deposit click
@@ -88,6 +64,10 @@ const StakeForm = ({ token: { image, address, name } }: StakeFormProps) => {
     setIsStaked(false);
   };
 
+  /**
+   * Changes state on receive notifications
+   * Runs everytime `notifications`, `isApproved`, `isStaked` changes
+   */
   useEffect(() => {
     if (
       notifications.filter(
@@ -115,30 +95,20 @@ const StakeForm = ({ token: { image, address, name } }: StakeFormProps) => {
   return (
     <>
       <StakeContainer>
-        <TextField
-          fullWidth
-          label='Enter Amount'
-          type='number'
-          variant='outlined'
+        <SliderInput
+          image={image}
+          maxValue={formattedTokenBalance}
+          id={`slider-input-${name}`}
           value={amount}
-          onChange={handleInputChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position='start'>
-                <Avatar
-                  alt='token logo'
-                  src={image}
-                  sx={{ width: 24, height: 24 }}
-                />
-              </InputAdornment>
-            ),
-          }}
+          onChange={setAmount}
+          disabled={isMining || hasZeroBalance}
         />
+
         <Button
           variant='contained'
           color='primary'
           onClick={handleSubmit}
-          disabled={isMining}
+          disabled={isMining || hasZeroAmountSelected}
           fullWidth
           size='large'
           style={{ marginTop: '1rem' }}
@@ -171,6 +141,13 @@ const StakeForm = ({ token: { image, address, name } }: StakeFormProps) => {
     </>
   );
 };
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
+});
 
 const StakeContainer = styled(Box)(
   ({ theme }) => `

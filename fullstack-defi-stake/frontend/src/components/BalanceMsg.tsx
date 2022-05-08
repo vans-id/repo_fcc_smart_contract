@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 
 interface BalanceMsgProps {
   /** token name */
-  name: string;
+  symbol: string;
   /** UI's label */
   label: string;
   /** token amount */
@@ -22,30 +22,37 @@ interface BalanceMsgProps {
  *        amount={1000}  />
  * )
  */
-const BalanceMsg = ({ name, label, amount }: BalanceMsgProps) => {
+const BalanceMsg = ({ symbol, label, amount }: BalanceMsgProps) => {
   return (
-    <Box>
-      <Typography>{label}</Typography>
+    <BalanceContainer>
+      <Typography variant='body2'>{label}</Typography>
       <TokenContainer>
         <Amount>{amount}</Amount>
-        <Typography>{name}</Typography>
+        <Typography>{symbol}</Typography>
       </TokenContainer>
-    </Box>
+    </BalanceContainer>
   );
 };
+
+const BalanceContainer = styled(Box)(
+  ({ theme }) => `
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+`
+);
 
 const TokenContainer = styled(Box)(
   ({ theme }) => `
   display: flex;
   align-items: center;
-  margin-top: ${theme.spacing(1)}
 `
 );
 
 const Amount = styled(Typography)(
   ({ theme }) => `
-  font-weight: 700;
-  margin-right: 0.5rem;
+  margin-right: 0.25rem;
 `
 );
 

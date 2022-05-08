@@ -1,6 +1,7 @@
 import { Box, Button, AppBar, Toolbar, Typography, Chip } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useEthers } from '@usedapp/core';
+import { Link } from 'react-router-dom';
 
 /**
  * Component for showing the Header.
@@ -24,9 +25,11 @@ const Header = () => {
 
       <Box sx={{ flexGrow: 1, display: 'flex' }}>
         {MENUS.map((menu) => (
-          <MenuItem key={menu} onClick={() => {}}>
-            {menu}
-          </MenuItem>
+          <Link to={`/${menu}`} style={{ margin: 0, textDecoration: 'none' }}>
+            <MenuItem key={menu} onClick={() => {}}>
+              {menu}
+            </MenuItem>
+          </Link>
         ))}
       </Box>
 
@@ -54,7 +57,7 @@ const Header = () => {
   );
 };
 
-const MENUS = ['stake', 'wrap', 'rewards'];
+const MENUS = ['crew', 'weth', 'dai'];
 
 const MenuItem = styled(Button)(
   ({ theme }) => `

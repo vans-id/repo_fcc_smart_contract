@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
-import { Button, CircularProgress, Snackbar } from '@mui/material';
+import { Button, CircularProgress, Snackbar, Typography } from '@mui/material';
 import { Token } from '../../utils/helper';
 import { useNotifications } from '@usedapp/core';
 import { formatUnits } from '@ethersproject/units';
@@ -21,7 +21,7 @@ interface UnstakeProps {
  *
  * @component
  */
-const Unstake = ({ token: { image, address, name } }: UnstakeProps) => {
+const Unstake = ({ token: { image, address, name, symbol } }: UnstakeProps) => {
   const [isUnstaked, setIsUnstaked] = useState(false);
 
   const { notifications } = useNotifications();
@@ -66,9 +66,11 @@ const Unstake = ({ token: { image, address, name } }: UnstakeProps) => {
 
   return (
     <>
+      <Typography variant='button'>Unstake</Typography>
+
       <UnstakeContainer>
         <BalanceMsg
-          name={name}
+          symbol={symbol}
           label={`Your staked ${name} balance`}
           amount={formattedBalance}
         />
@@ -79,7 +81,7 @@ const Unstake = ({ token: { image, address, name } }: UnstakeProps) => {
           onClick={onUnstakeSubmit}
           disabled={isMining || isZero}
         >
-          {isMining ? <CircularProgress size={26} /> : `Unstake all ${name}`}
+          {isMining ? <CircularProgress size={26} /> : `withdraw all`}
         </Button>
       </UnstakeContainer>
 

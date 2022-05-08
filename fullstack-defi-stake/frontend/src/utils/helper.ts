@@ -17,6 +17,7 @@ export type Token = {
   image: string;
   address: string;
   name: string;
+  symbol: string;
 };
 
 /**
@@ -47,9 +48,24 @@ export const getSupportedTokens = (chainId: number | undefined) => {
     : constants.AddressZero;
 
   const SUPPORTED_TOKENS: Array<Token> = [
-    { image: AmogusImage, address: crewmateTokenAddress, name: 'CREW' },
-    { image: EthImage, address: wethTokenAddress, name: 'WETH' },
-    { image: DaiImage, address: fauTokenAddress, name: 'DAI' },
+    {
+      image: AmogusImage,
+      address: crewmateTokenAddress,
+      name: 'Crewmate',
+      symbol: 'CREW',
+    },
+    {
+      image: EthImage,
+      address: wethTokenAddress,
+      name: 'Wrapped Ether',
+      symbol: 'WETH',
+    },
+    {
+      image: DaiImage,
+      address: fauTokenAddress,
+      name: 'DAI',
+      symbol: 'DAI',
+    },
   ];
 
   return SUPPORTED_TOKENS;

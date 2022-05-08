@@ -21,7 +21,7 @@ interface WalletBalanceProps {
  * return <WalletBalance token={token} />
  */
 const WalletBalance = ({
-  token: { image, address, name },
+  token: { image, address, name, symbol },
 }: WalletBalanceProps) => {
   const { account } = useEthers();
   const tokenBalance = useTokenBalance(address, account);
@@ -30,11 +30,15 @@ const WalletBalance = ({
     : 0;
 
   return (
-    <BalanceMsg
-      name={name}
-      label={`Available balance`}
-      amount={formattedTokenBalance}
-    />
+    <>
+      <BalanceMsg
+        symbol={symbol}
+        label={`Available balance`}
+        amount={formattedTokenBalance}
+      />
+      <BalanceMsg symbol='ETH' label={`Transaction cost`} amount={0.00001} />
+      <BalanceMsg symbol='%' label={`Staking rewards fee`} amount={12} />
+    </>
   );
 };
 

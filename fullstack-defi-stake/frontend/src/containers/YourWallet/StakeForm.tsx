@@ -111,7 +111,7 @@ const StakeForm = ({ token: { image, address, name } }: StakeFormProps) => {
           disabled={isMining || hasZeroAmountSelected}
           fullWidth
           size='large'
-          style={{ marginTop: '1rem' }}
+          style={{ margin: '1rem 0' }}
         >
           {isMining ? <CircularProgress /> : 'Submit'}
         </Button>
@@ -134,7 +134,7 @@ const StakeForm = ({ token: { image, address, name } }: StakeFormProps) => {
 
 const StakeContainer = styled(Box)(
   ({ theme }) => `
-  margin-top: 2rem;
+  margin: 1rem 0;
 `
 );
 
